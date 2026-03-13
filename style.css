@@ -1,0 +1,58 @@
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --primary-color: #777388;
+    --dark-bg: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, rgb(29, 10, 87), rgba(33, 15, 88, 0.979)),
+                url('https://images.unsplash.com/photo-1606326666490-45757474e788?q=80&w=2070') center/cover;
+    min-height: 90vh;
+}
+
+.glass-card {
+    background: rgba(226, 204, 183, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 2rem;
+    border: 1px solid rgba(175, 149, 117, 0.3);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #603105, #270f4b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.option-btn {
+    transition: all 0.3s ease;
+    border: 2px solid #eee;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: var(--primary-color);
+    background-color: rgba(165, 35, 41, 0.05);
+    transform: translateY(-2px);
+}
+
+.option-btn.selected {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color);
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
