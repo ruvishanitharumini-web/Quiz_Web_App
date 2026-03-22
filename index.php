@@ -1,0 +1,129 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster | Interactive Trivia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">QUIZMASTER</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-outline-light ms-lg-3 rounded-pill" href="auth/login.php">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-section d-flex align-items-center">
+        <div class="container text-center">
+            <div class="glass-card py-5 px-4 animate-fade-in">
+                <h1 class="display-2 fw-bold text-gradient">QuizMaster</h1>
+                <p class="lead mb-4">Test Your Knowledge Today</p>
+                <a href="#quiz" class="btn btn-primary btn-lg rounded-pill px-5 shadow">Start Quiz</a>
+                <div class="mt-5 text-start mx-auto col-md-8 border-top pt-4">
+                    <h3 class="fw-bold">About QuizMaster</h3>
+                    <p class="text-muted">An interactive platform designed to challenge your knowledge with a modern experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="py-5 bg-light min-vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="quiz-wrapper mx-auto shadow-lg bg-white rounded-4 overflow-hidden" style="max-width: 700px;">
+                <div class="bg-dark text-white p-4 d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Quiz Challenge</h4>
+                    <div class="badge bg-primary fs-6" id="score-badge">Score: 0</div>
+                </div>
+                <div class="p-4 p-md-5">
+                    <p id="question-count" class="text-primary fw-bold mb-1 small uppercase"></p>
+                    <h3 id="question-text" class="mb-4">Loading your challenge...</h3>
+                    <div id="answer-options" class="row g-3"></div>
+                    <div class="mt-5 pt-3 border-top d-flex justify-content-end">
+                        <button id="next-btn" class="btn btn-dark px-5 py-2 rounded-pill shadow-sm" disabled>Next Question</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php
+ 
+include 'includes/db.php';
+
+
+$message_status = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['contact_submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['userName']);
+    $email = mysqli_real_escape_string($conn, $_POST['userEmail']);
+    $message = mysqli_real_escape_string($conn, $_POST['userMessage']);
+
+    $sql = "INSERT INTO messages (name, email, message) VALUES ('$name', '$email', '$message')";
+    
+    if (mysqli_query($conn, $sql)) {
+        $message_status = "success";
+    } else {
+        $message_status = "error";
+    }
+}
+?>
+    <section id="contact" class="py-5 bg-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold display-5">Contact Us</h2>
+                        <p class="text-muted">Get in Touch — We'd love to hear from you!</p>
+                        
+                        <?php if($message_status == "success"): ?>
+                            <div class="alert alert-success">Thank you! Your message has been saved to our database.</div>
+                        <?php elseif($message_status == "error"): ?>
+                            <div class="alert alert-danger">Error saving message. Please try again.</div>
+                        <?php endif; ?>
+                    </div>
+
+                    <form action="index.php#contact" method="POST" id="contactForm" class="needs-validation" novalidate>
+                        <div class="form-floating mb-3">
+                            <input type="text" name="userName" id="userName" class="form-control rounded-3" placeholder="Name" required>
+                            <label for="userName">Full Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" name="userEmail" id="userEmail" class="form-control rounded-3" placeholder="Email" required>
+                            <label for="userEmail">Email Address</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <textarea name="userMessage" id="userMessage" class="form-control rounded-3" style="height: 150px" placeholder="Message" required></textarea>
+                            <label for="userMessage">Your Message</label>
+                        </div>
+                        <button type="submit" name="contact_submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-1">QuizMaster: Created by R.D.U.R. Sanjana & W.P.R.T. Thamel</p>
+            <div class="small text-muted">Student ID: 2023066</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
